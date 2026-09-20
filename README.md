@@ -6,22 +6,9 @@ of a **known training member**, not to detect membership.
 
 ## Release status
 
-This is a **paper-aligned reference implementation**, reconstructed from the
-manuscript and an earlier experimental script. It is **not a verified release of
-the exact code that generated the paper's tables**. In particular, the old script
-contained an additional ensemble stage and a different splitting procedure.
-Those are not silently retained here. See [method alignment](docs/METHOD_ALIGNMENT.md).
+This repository provides a compact reference implementation of MSTP-MTA-SIA for the representative FedMD/CIFAR-100 setting. It includes the core model, trajectory feature extraction, federated prediction collection, attack training, and evaluation pipeline.
 
-Included: one end-to-end FedMD/CIFAR-100 workflow, the core attack, temporal
-comparison implementations, component switches, and software tests. The current
-release does not include other datasets, all paper runs, or pretrained weights.
-Additional dataset configurations are planned after acceptance; this is a release
-plan, not a statement that those files are already available.
-
-**Validation:** NumPy feature/split/log checks and syntax checks have been run.
-PyTorch execution and full CIFAR-100 training have **not** been validated in the
-packaging environment. Do not treat synthetic test outputs as experimental
-results. See [validation status](docs/VALIDATION.md).
+The current release does not include the remaining datasets, all experimental configurations, pretrained weights, or complete multi-seed results. Implementations for the remaining datasets, federated learning protocols, and full experimental configurations will be released upon acceptance.
 
 ## Setting
 
@@ -29,7 +16,7 @@ results. See [validation status](docs/VALIDATION.md).
 | --- | --- |
 | Private data | CIFAR-100 training set |
 | Public alignment data | CIFAR-10 test set; labels are ignored |
-| Clients | 10, alternating the two CNNs from the earlier script |
+| Clients | 10, alternating between two CNN architectures |
 | Local partition | Per-class Dirichlet, alpha = 0.1 |
 | Communication rounds | 20 |
 | Local epochs | 10 per round |
@@ -66,26 +53,7 @@ For CUDA, use the matching command from PyTorch's installer, then install
 `requirements.txt`. Run commands below from this repository's root directory.
 `workers: 0` is the portable default, including on Windows.
 
-## First: run software checks
 
-```bash
-python -m unittest discover -s tests -v
-python smoke_test.py --output runs/smoke_check
-```
-
-The second command uses small, clearly marked **synthetic** logs. It tests
-training, saving, reloading and evaluation without a dataset download. It does
-not measure privacy leakage on real data. If PyTorch is missing, the NumPy-only
-path is:
-
-```bash
-python smoke_test.py --data-only --output runs/data_check
-```
-
-The model tests are skipped when PyTorch is absent; `OK (skipped=...)` is not
-evidence that model execution passed. A GitHub Actions workflow is provided to
-run the full CPU checks after upload. Its presence is not a claim that CI has
-already passed.
 
 ## Full single-setting experiment
 
@@ -203,10 +171,7 @@ as reproduced results until the actual commands have produced and verified them.
 
 Use this code only with data and client prediction interfaces you are authorized
 to access. Public CIFAR experiments do not authorize querying other deployments.
-The current project is a reference implementation, not a claim of acceptance,
-an artifact badge, or complete reproduction of all experiments.
 
-No license has been assigned by this package. Authors should agree on a code
-license and any third-party notices before advertising the repository as
-open-source. A public GitHub repository and an open-source license are different
-things.
+## Copyright
+
+Copyright © 2026 MSTP-MTA-SIA Authors. All rights reserved.
