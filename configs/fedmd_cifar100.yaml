@@ -1,0 +1,44 @@
+# Reference configuration, NOT a claim of reproducing the paper's table values.
+seed: 42
+data:
+  root: ./data
+  download: true
+  workers: 0                   # Portable Windows/Linux default
+  augmentation_strength: 0.2
+federated:
+  clients: 10
+  classes: 100
+  rounds: 20
+  alpha: 0.1
+  local_epochs: 10             # Representative setting, old script default was 5
+  local_lr: 0.01
+  local_batch_size: 64
+  momentum: 0.9
+  weight_decay: 0.0005
+  distill_epochs: 5
+  distill_lr: 0.01
+  public_batch_size: 256
+  query_batch_size: 512
+  queries_per_client: 100       # TOTAL across attack train/validation/test
+  record_at: after_local       # Paper wording; old script recorded after_distill
+attack:
+  split_ratios: [0.6, 0.2, 0.2]
+  batch_size: 64
+  epochs: 140
+  lr: 0.001
+  weight_decay: 0.01
+  patience: 15
+  min_delta: 0.0001
+  gradient_clip: 5.0
+model:
+  hidden_dim: 256              # d_h; BiLSTM hidden size = d_h / 2 per direction
+  tcn_width: 128
+  lstm_layers: 2
+  dropout: 0.35
+  heads: 4
+  scales: [1, 2, 4]
+  positional_encoding: true
+  temporal_attention: true
+  scale_attention: true
+  cross_client_attention: true
+  tcn: true
